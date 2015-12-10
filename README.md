@@ -93,7 +93,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     public function actionDefault()
     {
         $params = ['recipient' => 'hello@hello.hello'];
-        $mailFactory->createByType('App\Mailing\ContactMail', $params);
+        $this->mailFactory->createByType('App\Mailing\ContactMail', $params);
     }
 
 }
@@ -177,7 +177,7 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     public function actionDefault()
     {
         $params = ['recipient' => 'hello@hello.hello'];
-        $mailFactory->createByType('App\Mailing\ContactMail', $params)->send();
+        $this->mailFactory->createByType('App\Mailing\ContactMail', $params)->send();
     }
 
 }
