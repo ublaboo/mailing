@@ -1,6 +1,13 @@
 {
 	"name": "ublaboo/mailing",
 	"type": "library",
+	"description": "Simple usage of mailing (extension) for Nette framework",
+	"keywords": ["mail", "mailing", "log", "nette", "extension"],
+	"homepage": "http://ublaboo.paveljanda.com/mailing",
+	"license": ["MIT"],
+	"support": {
+		"issues": "https://github.com/ublaboo/mailing/issues"
+	},
 	"authors": [
 		{
 			"name": "Pavel Janda",
@@ -12,9 +19,19 @@
 			"Ublaboo\\Mailing\\": "src/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"Ublaboo\\Tests\\": "tests"
+		}
+	},
 	"require": {
 		"nette/utils"       : "~2.3.0",
 		"nette/di"          : "~2.3.0",
 		"nette/application" : "~2.3.0"
+	},
+	"require-test": {
+		"nette/tester": "~1.6.1",
+		"dibi/dibi": "~2.3.1",
+		"kdyby/doctrine": "~2.3.0"
 	}
 }
