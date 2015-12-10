@@ -1,0 +1,20 @@
+{
+	"name": "ublaboo/mailing",
+	"type": "library",
+	"authors": [
+		{
+			"name": "Pavel Janda",
+			"homepage": "http://paveljanda.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Ublaboo\\Mailing\\": "src/"
+		}
+	},
+	"require": {
+		"nette/utils"       : "~2.3.0",
+		"nette/di"          : "~2.3.0",
+		"nette/application" : "~2.3.0"
+	}
+}
