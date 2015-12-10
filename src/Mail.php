@@ -25,6 +25,11 @@ abstract class Mail extends Nette\Object
 	private $config;
 
 	/**
+	 * @var array
+	 */
+	private $mails;
+
+	/**
 	 * @var Nette\Mail\IMailer
 	 */
 	protected $mailer;
@@ -69,6 +74,11 @@ abstract class Mail extends Nette\Object
 	 */
 	protected $base_path = NULL;
 
+	/**
+	 * @var string
+	 */
+	protected $template_file;
+
 
 	public function __construct(
 		$config,
@@ -81,6 +91,7 @@ abstract class Mail extends Nette\Object
 		$args
 	) {
 		$this->config = $config;
+		$this->mails = $mails;
 		$this->mailer = $mailer;
 		$this->message = $message;
 		$this->linkGenerator = $linkGenerator;
@@ -88,9 +99,6 @@ abstract class Mail extends Nette\Object
 		$this->args = $args;
 
 		$this->template = $templateFactory->createTemplate();
-
-		$this->setTemplateFile();
-		$this->setTemplateVariables();
 
 		/**
 		 * Initiate mail composing
@@ -103,9 +111,9 @@ abstract class Mail extends Nette\Object
 	 * Set template file
 	 * @return void
 	 */
-	protected function setTemplateFile()
+	public function setTemplateFile($template_file)
 	{
-		$this->template->setFile($this->getTemplateFile());
+		$this->template_file = (string) $template_file;
 	}
 
 
@@ -127,7 +135,7 @@ abstract class Mail extends Nette\Object
 	 */
 	public function setBasePath($mail_images_base_path)
 	{
-		$this->mail_images_base_path = $mail_images_base_path;
+		$this->mail_images_base_path = (string) $mail_images_base_path;
 
 		return $this;
 	}
@@ -177,6 +185,15 @@ abstract class Mail extends Nette\Object
 	 */
 	public function send()
 	{
+		/**
+		 * Set template file and variables
+		 */
+		$this->template->setFile($this->template_file ?: $this->getTemplateFile());
+		$this->setTemplateVariables();
+
+		/**
+		 * Set html body
+		 */
 		$this->message->setHtmlBody((string) $this->template, $this->base_path);
 
 		/**
