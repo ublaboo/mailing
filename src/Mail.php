@@ -27,7 +27,7 @@ abstract class Mail extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $mails;
+	protected $mails;
 
 	/**
 	 * @var Nette\Mail\IMailer
@@ -72,7 +72,7 @@ abstract class Mail extends Nette\Object
 	/**
 	 * @var string
 	 */
-	protected $base_path = NULL;
+	protected $mail_images_base_path;
 
 	/**
 	 * @var string
@@ -114,6 +114,8 @@ abstract class Mail extends Nette\Object
 	public function setTemplateFile($template_file)
 	{
 		$this->template_file = (string) $template_file;
+
+		return $this;
 	}
 
 
@@ -194,7 +196,7 @@ abstract class Mail extends Nette\Object
 		/**
 		 * Set html body
 		 */
-		$this->message->setHtmlBody((string) $this->template, $this->base_path);
+		$this->message->setHtmlBody((string) $this->template, $this->mail_images_base_path);
 
 		/**
 		 * In case mail sending in on, send message

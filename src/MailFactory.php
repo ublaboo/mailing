@@ -45,6 +45,16 @@ class MailFactory extends Nette\Object
 	 */
 	private $linkGenerator;
 
+	/**
+	 * @var Ublaboo\Mailing\MailLogger
+	 */
+	private $logger;
+
+	/**
+	 * @var string
+	 */
+	private $mail_images_base_path;
+
 
 	public function __construct(
 		$config,
@@ -52,13 +62,16 @@ class MailFactory extends Nette\Object
 		$mails,
 		Nette\Mail\IMailer $mailer,
 		Nette\Application\LinkGenerator $linkGenerator,
-		Nette\Application\UI\ITemplateFactory $templateFactory
+		Nette\Application\UI\ITemplateFactory $templateFactory,
+		Ublaboo\Mailing\MailLogger $logger
 	) {
 		$this->config = $config;
+		$this->mail_images_base_path = $mail_images_base_path;
 		$this->mailer = $mailer;
 		$this->mails  = $mails;
 		$this->linkGenerator = $linkGenerator;
 		$this->templateFactory = $templateFactory;
+		$this->logger = $logger;
 	}
 
 

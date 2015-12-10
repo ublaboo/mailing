@@ -12,7 +12,7 @@ Now there is several config options.
 
     mailing:
         do: log|send|both
-        log_diretory: '%appDir%/../log/mails' #  is default option
+        log_directory: '%appDir%/../log/mails' #  is default option
         mail_images_base_path: %wwwDir% # this is default option
         mails: []
 
