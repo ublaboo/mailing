@@ -183,4 +183,6 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
 }
 ```
 
-##### Cool. And - if you set the config option `do` to `log` od `both`, than you can look inside your log directory for generated `.eml` file. Easy..
+##### Cool.
+
+And - if you set the config option `do` to `log` od `both`, than you can look inside your log directory for generated `.eml` file. Easy..
