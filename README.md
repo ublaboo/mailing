@@ -8,11 +8,11 @@ Start with registering extension in `config.neon`:
     extension:
         mailing: Ublaboo\Mailing\DI\MailingExtension
 
-Now there is several config options.
+Now there are several config options.
 
     mailing:
-        do: log|send|both
-        log_diretory: '%appDir%/../log/mails' #  is default option
+        do: both # log|send|both
+        log_diretory: '%appDir%/../log/mails' # this is default option
         mail_images_base_path: %wwwDir% # this is default option
         mails: []
 
@@ -51,18 +51,20 @@ E.g.:
 Once you have registered mailing extension, you can create new mail class:
 
 ```php
+namespace App;
+
 use Nette,
-    Ublaboo\Mailing\Mail,
-    Ublaboo\Mailing\IComposableMail;
+	Ublaboo\Mailing\Mail,
+	Ublaboo\Mailing\IComposableMail;
 
 class ContactMail extends Mail implements IComposableMail
 {
 
-    /**
-     * There you will always have your mail addresses from configuration file
+	/**
+	 * There you will always have your mail addresses from configuration file
 	 * @var array
 	 */
-	private $mails;
+	protected $mails;
 
 
 	public function compose(Nette\Mail\Message $message, $params = NULL)
