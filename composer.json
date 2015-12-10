@@ -1,7 +1,7 @@
 {
 	"name": "ublaboo/mailing",
 	"type": "library",
-	"description": "Simple usage of mailing (extension) for Nette framework",
+	"description": "Extension for Nette Framework: Easy & object-oriented way of sending & logging mails",
 	"keywords": ["mail", "mailing", "log", "nette", "extension"],
 	"homepage": "http://ublaboo.paveljanda.com/mailing",
 	"license": ["MIT"],
@@ -21,7 +21,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Ublaboo\\Tests\\": "tests"
+			"Ublaboo\\Mailing\\Tests\\": "tests"
 		}
 	},
 	"require": {
