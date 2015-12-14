@@ -18,7 +18,7 @@ class MailingExtension extends Nette\DI\CompilerExtension
         'do' => Mail::CONFIG_BOTH,
         'log_directory' => '%appDir%/../log/mails',
         'mail_images_base_path' => '%wwwDir%',
-        'mails' => []
+        'mails' => []
     ];
 
 
