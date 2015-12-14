@@ -8,7 +8,8 @@ use Tester\TestCase,
 	Ublaboo\Mailing\Mail,
 	Ublaboo\Mailing\MailFactory;
 
-require __DIR__ . '/../bootstrap.php'; 
+require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../mails/XTestingMail.php';
 
 final class MailTest extends TestCase
 {
