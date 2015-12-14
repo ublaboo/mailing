@@ -17,10 +17,14 @@ final class MailLoggerTest extends TestCase
 		$log_dir = 'foo';
 		$logger = new MailLogger($log_dir);
 
-		$computed_path = $logger->getLogFile('bar', '2015-12-14 22:11:09');
-		Assert::same($computed_path, 'foo/2015/2015-12/2015-12-14/bar.eml');
+		$path = $logger->getLogFile('bar', '2015-12-14 22:11:09');
+		Assert::same($path, 'foo/2015/2015-12/2015-12-14/bar.eml');
 
-		@unlink($computed_path);
+		@unlink($path);
+		@rmdir($path = dirname($path));
+		@rmdir($path = dirname($path));
+		@rmdir($path = dirname($path));
+		@rmdir($path = dirname($path));
 	}
 
 }
