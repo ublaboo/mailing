@@ -27,7 +27,7 @@ abstract class Mail extends Nette\Object
 	/**
 	 * @var array
 	 */
-	private $mails;
+	protected $mails;
 
 	/**
 	 * @var Nette\Mail\IMailer
@@ -50,9 +50,9 @@ abstract class Mail extends Nette\Object
 	protected $linkGenerator;
 
 	/**
-     * @var MailLogger
-     */
-    protected $logger;
+	 * @var ILogger
+	 */
+	protected $logger;
 
 	/**
 	 * @var Nette\Application\UI\ITemplate
@@ -72,7 +72,7 @@ abstract class Mail extends Nette\Object
 	/**
 	 * @var string
 	 */
-	protected $base_path = NULL;
+	protected $mail_images_base_path;
 
 	/**
 	 * @var string
@@ -87,7 +87,7 @@ abstract class Mail extends Nette\Object
 		Nette\Mail\Message $message,
 		Nette\Application\LinkGenerator $linkGenerator,
 		Nette\Application\UI\ITemplateFactory $templateFactory,
-		MailLogger $logger,
+		ILogger $logger,
 		$args
 	) {
 		$this->config = $config;
@@ -150,8 +150,12 @@ abstract class Mail extends Nette\Object
 	 * 
 	 * @return string
 	 */
-	protected function getTemplateFile()
+	public function getTemplateFile()
 	{
+		if ($this->template_file) {
+			return $this->template_file;
+		}
+
 		/**
 		 * Get child class file path
 		 * @var \ReflectionClass
@@ -166,16 +170,22 @@ abstract class Mail extends Nette\Object
 		$class_name = pathinfo($class_path, PATHINFO_FILENAME);
 
 		/**
-         * Convert class name to underscore and set latte file extension
-         */
-        $this->underscore_name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function ($m) {
-            return '_' . strtolower($m[1]);
-        }, $class_name));
+		 * Convert class name to underscore and set latte file extension
+		 */
+		$this->underscore_name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function ($m) {
+			return '_' . strtolower($m[1]);
+		}, $class_name));
 
 		$template_name = $this->underscore_name . '.latte';
 		$this->log_type = $this->underscore_name;
 
-		return $class_dir . '/templates/' . $template_name;
+		$template_file = "$class_dir/templates/$template_name";
+
+		if (!file_exists($template_file)) {
+			throw new MailException("Error creating template from file [$template_file]", 1);
+		}
+
+		return $template_file;
 	}
 
 
@@ -186,15 +196,27 @@ abstract class Mail extends Nette\Object
 	public function send()
 	{
 		/**
-		 * Set template file and variables
+		 * Set template variables
 		 */
-		$this->template->setFile($this->template_file ?: $this->getTemplateFile());
 		$this->setTemplateVariables();
 
 		/**
-		 * Set html body
+		 * Set body/html body
 		 */
-		$this->message->setHtmlBody((string) $this->template, $this->base_path);
+		try {
+			$this->template->setFile($this->getTemplateFile());
+			$this->message->setHtmlBody((string) $this->template, $this->mail_images_base_path);
+		} catch (MailException $e) {
+			/**
+			 * If mail template was set and not found, bubble exception up
+			 */
+			if ($this->template_file) {
+				throw $e;
+			}
+			/**
+			 * Otherwise just suppose that user has set message body via ::setBody
+			 */
+		}
 
 		/**
 		 * In case mail sending in on, send message
@@ -204,11 +226,16 @@ abstract class Mail extends Nette\Object
 		}
 
 		/**
-		 * In case mail logging in on, log message
+		 * In case mail logging is turned on, log message
 		 */
 		if ($this->config === self::CONFIG_LOG || $this->config === self::CONFIG_BOTH) {
 			$this->logger->log($this->log_type, $this->message);
 		}
 	}
 
+}
+
+
+class MailException extends \Exception
+{
 }
