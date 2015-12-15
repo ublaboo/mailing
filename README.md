@@ -165,6 +165,8 @@ $mail->setTemplateFile('super_awesome_template.latte');
 # ...
 ```
 
+And of course you don't have to send mails with templates, you can use just plaintext mail body. In that case you would probably do that in you mail class (`$message->setBody('Hello')`).
+
 ##### Aaaaaand .... send it! - complete example in `Presenter`:
 
 ```php
