@@ -101,7 +101,7 @@ class MailFactory extends Nette\Object
             return $mail;
         }
 
-		throw new MailCreationException("Error creating mail service [$type]");
+		throw new MailCreationException("Email [$type] does not exist");
 	}
 
 }
