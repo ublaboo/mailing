@@ -2,7 +2,7 @@
 [![Latest Stable Version](https://poser.pugx.org/ublaboo/mailing/v/stable)](https://packagist.org/packages/ublaboo/mailing)
 [![License](https://poser.pugx.org/ublaboo/mailing/license)](https://packagist.org/packages/ublaboo/mailing)
 [![Total Downloads](https://poser.pugx.org/ublaboo/mailing/downloads)](https://packagist.org/packages/ublaboo/mailing)
-[![HHVM Status](http://hhvm.h4cc.de/badge/ublaboo/mailing.svg?style=flat)](http://hhvm.h4cc.de/package/ublaboo/mailing)
+[![HHVM Status](https://img.shields.io/hhvm/ublaboo/mailing/master.svg)](http://hhvm.h4cc.de/package/ublaboo/mailing)
 
 #Mailing
 
