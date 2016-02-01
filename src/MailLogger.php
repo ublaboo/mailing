@@ -30,7 +30,6 @@ class MailLogger extends Nette\Object implements ILogger
 	/**
 	 * Log mail messages to eml file
 	 * @param  string $type
-	 * @param  string $text
 	 * @return void
 	 */
 	public function log($type, Nette\Mail\Message $mail)
@@ -57,8 +56,8 @@ class MailLogger extends Nette\Object implements ILogger
 	{
 		preg_match('/^((([0-9]{4})-[0-9]{2})-[0-9]{2}).*/', $timestamp, $fragments);
 
-		$year_dir  = $this->log_directory  . '/' . $fragments[3];
-		$month_dir = $year_dir  . '/' . $fragments[2];
+		$year_dir  = $this->log_directory . '/' . $fragments[3];
+		$month_dir = $year_dir . '/' . $fragments[2];
 		$day_dir   = $month_dir . '/' . $fragments[1];
 		$file      = $day_dir . '/' . $type . static::LOG_EXTENSION;
 

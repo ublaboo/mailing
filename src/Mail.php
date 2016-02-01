@@ -8,8 +8,8 @@
 
 namespace Ublaboo\Mailing;
 
-use Nette,
-	Ublaboo;
+use Nette;
+use Ublaboo;
 
 abstract class Mail extends Nette\Object
 {
@@ -172,7 +172,7 @@ abstract class Mail extends Nette\Object
 		/**
 		 * Convert class name to underscore and set latte file extension
 		 */
-		$this->underscore_name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function ($m) {
+		$this->underscore_name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function($m) {
 			return '_' . strtolower($m[1]);
 		}, $class_name));
 

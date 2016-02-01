@@ -8,9 +8,9 @@
 
 namespace Ublaboo\Mailing;
 
-use Nette,
-	Nette\Mail\Message,
-	Ublaboo;
+use Nette;
+use Nette\Mail\Message;
+use Ublaboo;
 
 class MailFactory extends Nette\Object
 {
@@ -85,21 +85,21 @@ class MailFactory extends Nette\Object
 		$this->message = new Message;
 
 		if (class_exists($type)) {
-            $mail = new $type(
-                $this->config,
-                $this->mails,
-                $this->mailer,
-                $this->message,
-                $this->linkGenerator,
-                $this->templateFactory,
-                $this->logger,
-                $args
-            );
+			$mail = new $type(
+				$this->config,
+				$this->mails,
+				$this->mailer,
+				$this->message,
+				$this->linkGenerator,
+				$this->templateFactory,
+				$this->logger,
+				$args
+			);
 
-            $mail->setBasePath($this->mail_images_base_path);
+			$mail->setBasePath($this->mail_images_base_path);
 
-            return $mail;
-        }
+			return $mail;
+		}
 
 		throw new MailCreationException("Email [$type] does not exist");
 	}
