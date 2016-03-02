@@ -2,6 +2,7 @@
 [![Latest Stable Version](https://poser.pugx.org/ublaboo/mailing/v/stable)](https://packagist.org/packages/ublaboo/mailing)
 [![License](https://poser.pugx.org/ublaboo/mailing/license)](https://packagist.org/packages/ublaboo/mailing)
 [![Total Downloads](https://poser.pugx.org/ublaboo/mailing/downloads)](https://packagist.org/packages/ublaboo/mailing)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/ublaboo/help)
 
 #Mailing
 
