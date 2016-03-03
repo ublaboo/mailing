@@ -11,6 +11,7 @@ namespace Ublaboo\Mailing;
 use Nette;
 use Nette\Mail\Message;
 use Ublaboo;
+use Ublaboo\Mailing\Exception\MailingMailCreationException;
 
 class MailFactory extends Nette\Object
 {
@@ -66,6 +67,7 @@ class MailFactory extends Nette\Object
 		ILogger $logger
 	) {
 		$this->config = $config;
+		$this->mail_images_base_path = $mail_images_base_path;
 		$this->mailer = $mailer;
 		$this->mails  = $mails;
 		$this->linkGenerator = $linkGenerator;
@@ -78,7 +80,7 @@ class MailFactory extends Nette\Object
 	 * Create email by given type
 	 * @param  string $type
 	 * @return Ublaboo\Mailing\Mail
-	 * @throws MailCreationException
+	 * @throws MailingMailCreationException
 	 */
 	public function createByType($type, $args)
 	{
@@ -101,12 +103,7 @@ class MailFactory extends Nette\Object
 			return $mail;
 		}
 
-		throw new MailCreationException("Email [$type] does not exist");
+		throw new MailingMailCreationException("Email [$type] does not exist");
 	}
 
-}
-
-
-class MailCreationException extends \Exception
-{
 }

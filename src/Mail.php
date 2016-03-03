@@ -10,6 +10,7 @@ namespace Ublaboo\Mailing;
 
 use Nette;
 use Ublaboo;
+use Ublaboo\Mailing\Exception\MailingException;
 
 abstract class Mail extends Nette\Object
 {
@@ -60,7 +61,7 @@ abstract class Mail extends Nette\Object
 	protected $template;
 
 	/**
-	 * @var stirng
+	 * @var string
 	 */
 	protected $underscore_name;
 
@@ -104,6 +105,17 @@ abstract class Mail extends Nette\Object
 		 * Initiate mail composing
 		 */
 		$this->compose($this->message, $this->args);
+	}
+
+
+	/**
+	 * Composing message (adding <from>, <to>, etc)
+	 * @param  Nette\Mail\Message $message
+	 * @param  array|NULL         $params
+	 * @return viod
+	 */
+	public function compose(Nette\Mail\Message $message, $params = NULL)
+	{
 	}
 
 
@@ -172,7 +184,7 @@ abstract class Mail extends Nette\Object
 		/**
 		 * Convert class name to underscore and set latte file extension
 		 */
-		$this->underscore_name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function($m) {
+		$this->underscore_name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function ($m) {
 			return '_' . strtolower($m[1]);
 		}, $class_name));
 
@@ -182,7 +194,7 @@ abstract class Mail extends Nette\Object
 		$template_file = "$class_dir/templates/$template_name";
 
 		if (!file_exists($template_file)) {
-			throw new MailException("Error creating template from file [$template_file]", 1);
+			throw new MailingException("Error creating template from file [$template_file]", 1);
 		}
 
 		return $template_file;
@@ -206,7 +218,7 @@ abstract class Mail extends Nette\Object
 		try {
 			$this->template->setFile($this->getTemplateFile());
 			$this->message->setHtmlBody((string) $this->template, $this->mail_images_base_path);
-		} catch (MailException $e) {
+		} catch (MailingException $e) {
 			/**
 			 * If mail template was set and not found, bubble exception up
 			 */
@@ -233,9 +245,4 @@ abstract class Mail extends Nette\Object
 		}
 	}
 
-}
-
-
-class MailException extends \Exception
-{
 }

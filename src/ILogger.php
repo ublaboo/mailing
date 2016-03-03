@@ -15,7 +15,8 @@ interface ILogger
 
 	/**
 	 * Log mail messages to eml file
-	 * @param  string $type
+	 * @param  string             $type
+	 * @param  Nette\Mail\Message $mail
 	 * @return void
 	 */
 	public function log($type, Nette\Mail\Message $mail);

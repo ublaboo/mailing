@@ -2,11 +2,12 @@
 
 namespace Ublaboo\Mailing\Tests\Cases;
 
-use Tester\TestCase,
-	Tester\Assert,
-	Mockery,
-	Ublaboo\Mailing\Mail,
-	Ublaboo\Mailing\MailFactory;
+use Tester\TestCase;
+use Tester\Assert;
+use Mockery;
+use Ublaboo\Mailing\Mail;
+use Ublaboo\Mailing\MailFactory;
+use Ublaboo\Mailing\Exception\MailingException;
 
 require __DIR__ . '/../bootstrap.php';
 require __DIR__ . '/../mails/XTestingMail.php';
@@ -59,7 +60,7 @@ final class MailTest extends TestCase
 	{
 		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_BOTH);
 
-		Assert::exception([$mail, 'getTemplateFile'], 'Ublaboo\Mailing\MailException');
+		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
 		$mail->setTemplateFile($this->getTmpTemplateFile('XTestingMail'));
 		$mail->send();
@@ -75,7 +76,7 @@ final class MailTest extends TestCase
 	{
 		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_SEND);
 
-		Assert::exception([$mail, 'getTemplateFile'], 'Ublaboo\Mailing\MailException');
+		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
 		$mail->setTemplateFile($this->getTmpTemplateFile('XTestingMail'));
 		$mail->send();
@@ -91,7 +92,7 @@ final class MailTest extends TestCase
 	{
 		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_LOG);
 
-		Assert::exception([$mail, 'getTemplateFile'], 'Ublaboo\Mailing\MailException');
+		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
 		$mail->setTemplateFile($this->getTmpTemplateFile('XTestingMail'));
 		$mail->send();
@@ -107,7 +108,7 @@ final class MailTest extends TestCase
 	{
 		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_BOTH);
 
-		Assert::exception([$mail, 'getTemplateFile'], 'Ublaboo\Mailing\MailException');
+		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
 		$mail->send();
 
