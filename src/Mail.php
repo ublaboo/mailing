@@ -104,18 +104,9 @@ abstract class Mail extends Nette\Object
 		/**
 		 * Initiate mail composing
 		 */
-		$this->compose($this->message, $this->args);
-	}
-
-
-	/**
-	 * Composing message (adding <from>, <to>, etc)
-	 * @param  Nette\Mail\Message $message
-	 * @param  array|NULL         $params
-	 * @return viod
-	 */
-	public function compose(Nette\Mail\Message $message, $params = NULL)
-	{
+		if ($this instanceof IComposableMail) {
+			$this->compose($this->message, $this->args);
+		}
 	}
 
 
