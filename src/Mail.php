@@ -208,6 +208,8 @@ abstract class Mail extends Nette\Object
 		 */
 		try {
 			$this->template->setFile($this->getTemplateFile());
+			$this->template->_control = $this->linkGenerator;
+
 			$this->message->setHtmlBody((string) $this->template, $this->mail_images_base_path);
 		} catch (MailingException $e) {
 			/**
