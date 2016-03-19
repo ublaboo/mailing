@@ -57,6 +57,15 @@ class MailFactory extends Nette\Object
 	private $mail_images_base_path;
 
 
+	/**
+	 * @param string                                $config
+	 * @param string                                $mail_images_base_path
+	 * @param array                                 $mails
+	 * @param Nette\Mail\IMailer                    $mailer
+	 * @param Nette\Application\LinkGenerator       $linkGenerator
+	 * @param Nette\Application\UI\ITemplateFactory $templateFactory
+	 * @param ILogger                               $logger
+	 */
 	public function __construct(
 		$config,
 		$mail_images_base_path,
@@ -78,11 +87,12 @@ class MailFactory extends Nette\Object
 
 	/**
 	 * Create email by given type
-	 * @param  string $type
+	 * @param  string     $type
+	 * @param  mixed|null $args
 	 * @return Ublaboo\Mailing\Mail
 	 * @throws MailingMailCreationException
 	 */
-	public function createByType($type, $args)
+	public function createByType($type, $args = NULL)
 	{
 		$this->message = new Message;
 
