@@ -135,6 +135,7 @@ abstract class Mail extends Nette\Object
 	/**
 	 * Set absolute base path for images
 	 * @param string $mail_images_base_path
+	 * @return self
 	 */
 	public function setBasePath($mail_images_base_path)
 	{
@@ -155,10 +156,6 @@ abstract class Mail extends Nette\Object
 	 */
 	public function getTemplateFile()
 	{
-		if ($this->template_file) {
-			return $this->template_file;
-		}
-
 		/**
 		 * Get child class file path
 		 * @var \ReflectionClass
@@ -181,6 +178,10 @@ abstract class Mail extends Nette\Object
 
 		$template_name = $this->underscore_name . '.latte';
 		$this->log_type = $this->underscore_name;
+
+		if ($this->template_file) {
+			return $this->template_file;
+		}
 
 		$template_file = "$class_dir/templates/$template_name";
 
