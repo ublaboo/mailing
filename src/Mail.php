@@ -8,6 +8,7 @@
 
 namespace Ublaboo\Mailing;
 
+use Latte;
 use Nette;
 use Ublaboo;
 use Ublaboo\Mailing\Exception\MailingException;
@@ -209,7 +210,11 @@ abstract class Mail extends Nette\Object
 		 */
 		try {
 			$this->template->setFile($this->getTemplateFile());
-			$this->template->_control = $this->linkGenerator;
+			if (version_compare(Latte\Engine::VERSION, '2.4') < 0) {
+		        	$this->template->_control = $this->linkGenerator; // Latte 2.3
+			} else {
+		        	$this->template->getLatte()->addProvider('uiControl', $this->linkGenerator); // Latte 2.4
+			}
 
 			$this->message->setHtmlBody((string) $this->template, $this->mail_images_base_path);
 		} catch (MailingException $e) {
