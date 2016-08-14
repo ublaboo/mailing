@@ -25,11 +25,15 @@ final class MailTest extends TestCase
 		$templateFactory = Mockery::mock('Nette\Application\UI\ITemplateFactory');
 		$logger          = Mockery::mock('Ublaboo\Mailing\ILogger');
 		$template        = Mockery::mock('Nette\Application\UI\ITemplate');
+		$latte           = Mockery::mock('Latte\Engine');
 
 		$templateFactory->shouldReceive('createTemplate')->andReturn($template);
 
+		$latte->shouldReceive('addProvider');
+
 		$template->file = FALSE;
 		$template->shouldReceive('setFile')->andSet('file', TRUE);
+		$template->shouldReceive('getLatte')->andReturn($latte);
 
 		$mailer->sent = FALSE;
 		$mailer->shouldReceive('send')->andSet('sent', TRUE);
