@@ -212,7 +212,7 @@ abstract class Mail extends Nette\Object
 			$this->template->setFile($this->getTemplateFile());
 
 			if (version_compare(Latte\Engine::VERSION, '2.4.0', '>=')) {
-				$template->getLatte()->addProvider('uiControl', $this->linkGenerator);
+				$this->template->getLatte()->addProvider('uiControl', $this->linkGenerator);
 			} else {
 				$this->template->_control = $this->linkGenerator;
 			}
