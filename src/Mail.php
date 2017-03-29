@@ -234,7 +234,18 @@ abstract class Mail extends Nette\Object
 		 * In case mail sending in on, send message
 		 */
 		if ($this->config === self::CONFIG_BOTH || $this->config === self::CONFIG_SEND) {
-			$this->mailer->send($this->message);
+			try {
+				$this->mailer->send($this->message);
+			} catch (\Exception $e) {
+				/**
+				 * In case mail logging is turned on, log failed email message
+				 */
+				if ($this->config === self::CONFIG_BOTH) {
+					$this->logger->log($this->log_type . '_failed', $this->message);
+				}
+				
+				throw $e;
+			}
 		}
 
 		/**
