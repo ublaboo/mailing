@@ -9,4 +9,4 @@
 
 Extension for Nette Framework: Easy & object-oriented way of sending & logging mails
 
-Please see the documentation [here](http://ublaboo.paveljanda.com/mailing/)
+Please see the documentation [here](https://ublaboo.org/mailing/)
