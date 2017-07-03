@@ -3,7 +3,7 @@
 	"type": "library",
 	"description": "Extension for Nette Framework: Easy & object-oriented way of sending & logging mails",
 	"keywords": ["mail", "mailing", "log", "nette", "extension"],
-	"homepage": "http://ublaboo.paveljanda.com/mailing",
+	"homepage": "https://ublaboo.org/mailing",
 	"license": ["MIT"],
 	"support": {
 		"issues": "https://github.com/ublaboo/mailing/issues"
