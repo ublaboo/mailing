@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright   Copyright (c) 2015 ublaboo <ublaboo@paveljanda.com>
  * @author      Pavel Janda <me@paveljanda.com>
@@ -12,8 +14,7 @@ use Nette;
 
 class MailLogger extends Nette\Object implements ILogger
 {
-
-	CONST LOG_EXTENSION = '.eml';
+	public const LOG_EXTENSION = '.eml';
 
 	/**
 	 * @var string
@@ -57,13 +58,13 @@ class MailLogger extends Nette\Object implements ILogger
 	{
 		preg_match('/^((([0-9]{4})-[0-9]{2})-[0-9]{2}).*/', $timestamp, $fragments);
 
-		$year_dir  = $this->log_directory . '/' . $fragments[3];
+		$year_dir = $this->log_directory . '/' . $fragments[3];
 		$month_dir = $year_dir . '/' . $fragments[2];
-		$day_dir   = $month_dir . '/' . $fragments[1];
-		$file      = $day_dir . '/' . $type . static::LOG_EXTENSION;
+		$day_dir = $month_dir . '/' . $fragments[1];
+		$file = $day_dir . '/' . $type . static::LOG_EXTENSION;
 
 		if (!file_exists($day_dir)) {
-			mkdir($day_dir, 0777, TRUE);
+			mkdir($day_dir, 0777, true);
 		}
 
 		if (!file_exists($file)) {
@@ -72,5 +73,4 @@ class MailLogger extends Nette\Object implements ILogger
 
 		return $file;
 	}
-
 }

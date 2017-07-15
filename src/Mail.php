@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright   Copyright (c) 2015 ublaboo <ublaboo@paveljanda.com>
  * @author      Pavel Janda <me@paveljanda.com>
@@ -8,23 +10,16 @@
 
 namespace Ublaboo\Mailing;
 
+use Latte;
 use Nette;
 use Ublaboo;
 use Ublaboo\Mailing\Exception\MailingException;
-use Latte;
 
 abstract class Mail extends Nette\Object
 {
-
-	const CONFIG_LOG  = 'log';
-	const CONFIG_SEND = 'send';
-	const CONFIG_BOTH = 'both';
-
-
-	/**
-	 * @var string
-	 */
-	private $config;
+	public const CONFIG_LOG = 'log';
+	public const CONFIG_SEND = 'send';
+	public const CONFIG_BOTH = 'both';
 
 	/**
 	 * @var array
@@ -80,6 +75,12 @@ abstract class Mail extends Nette\Object
 	 * @var string
 	 */
 	protected $template_file;
+
+
+	/**
+	 * @var string
+	 */
+	private $config;
 
 
 	public function __construct(
@@ -162,7 +163,7 @@ abstract class Mail extends Nette\Object
 		 * @var \ReflectionClass
 		 */
 		$reflection = new \ReflectionClass(get_class($this));
-		
+
 		/**
 		 * Split path to directory and file
 		 */
@@ -244,5 +245,4 @@ abstract class Mail extends Nette\Object
 			$this->logger->log($this->log_type, $this->message);
 		}
 	}
-
 }

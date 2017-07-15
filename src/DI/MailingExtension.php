@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright   Copyright (c) 2015 ublaboo <ublaboo@paveljanda.com>
  * @author      Pavel Janda <me@paveljanda.com>
@@ -8,17 +10,16 @@
 
 namespace Ublaboo\Mailing\DI;
 
-use Nette,
-	Ublaboo\Mailing\Mail;
+use Nette;
+use Ublaboo\Mailing\Mail;
 
 class MailingExtension extends Nette\DI\CompilerExtension
 {
-
 	private $defaults = [
 		'do' => Mail::CONFIG_BOTH,
 		'log_directory' => '%appDir%/../log/mails',
 		'mail_images_base_path' => '%wwwDir%',
-		'mails' => []
+		'mails' => [],
 	];
 
 
@@ -54,5 +55,4 @@ class MailingExtension extends Nette\DI\CompilerExtension
 
 		return $config;
 	}
-
 }

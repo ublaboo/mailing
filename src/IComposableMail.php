@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright   Copyright (c) 2015 ublaboo <ublaboo@paveljanda.com>
  * @author      Pavel Janda <me@paveljanda.com>
@@ -18,6 +20,5 @@ interface IComposableMail
 	 * @param  mixed              $params
 	 * @return mixed
 	 */
-	public function compose(Nette\Mail\Message $message, $params = NULL);
-
+	public function compose(Nette\Mail\Message $message, $params = null);
 }

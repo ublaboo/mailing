@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @copyright   Copyright (c) 2015 ublaboo <ublaboo@paveljanda.com>
  * @author      Pavel Janda <me@paveljanda.com>
@@ -78,7 +80,7 @@ class MailFactory extends Nette\Object
 		$this->config = $config;
 		$this->mail_images_base_path = $mail_images_base_path;
 		$this->mailer = $mailer;
-		$this->mails  = $mails;
+		$this->mails = $mails;
 		$this->linkGenerator = $linkGenerator;
 		$this->templateFactory = $templateFactory;
 		$this->logger = $logger;
@@ -92,7 +94,7 @@ class MailFactory extends Nette\Object
 	 * @return Ublaboo\Mailing\Mail
 	 * @throws MailingMailCreationException
 	 */
-	public function createByType($type, $args = NULL)
+	public function createByType($type, $args = null)
 	{
 		$this->message = new Message;
 
@@ -115,5 +117,4 @@ class MailFactory extends Nette\Object
 
 		throw new MailingMailCreationException("Email [$type] does not exist");
 	}
-
 }
