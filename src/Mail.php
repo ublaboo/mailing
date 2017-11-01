@@ -15,8 +15,10 @@ use Nette;
 use Ublaboo;
 use Ublaboo\Mailing\Exception\MailingException;
 
-abstract class Mail extends Nette\Object
+abstract class Mail
 {
+	use Nette\SmartObject;
+
 	public const CONFIG_LOG = 'log';
 	public const CONFIG_SEND = 'send';
 	public const CONFIG_BOTH = 'both';

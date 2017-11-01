@@ -15,8 +15,9 @@ use Nette\Mail\Message;
 use Ublaboo;
 use Ublaboo\Mailing\Exception\MailingMailCreationException;
 
-class MailFactory extends Nette\Object
+class MailFactory
 {
+	use Nette\SmartObject;
 
 	/**
 	 * @var string
