@@ -12,8 +12,10 @@ namespace Ublaboo\Mailing;
 
 use Nette;
 
-class MailLogger extends Nette\Object implements ILogger
+class MailLogger implements ILogger
 {
+	use Nette\SmartObject;
+
 	public const LOG_EXTENSION = '.eml';
 
 	/**
