@@ -14,6 +14,7 @@ use Nette;
 
 class MailLogger implements ILogger
 {
+
 	use Nette\SmartObject;
 
 	public const LOG_EXTENSION = '.eml';
