@@ -10,13 +10,6 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing;
 
-use Nette\Mail\Message;
-
-interface ILogger
+interface IMailData
 {
-
-	/**
-	 * Log mail messages to eml file
-	 */
-	public function log($type, Message $mail): void;
 }

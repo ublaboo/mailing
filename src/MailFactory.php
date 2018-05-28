@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing;
 
-use Nette;
+use Nette\Application\LinkGenerator;
+use Nette\Application\UI\ITemplateFactory;
+use Nette\Mail\IMailer;
 use Nette\Mail\Message;
-use Ublaboo;
 use Ublaboo\Mailing\Exception\MailingMailCreationException;
 
 class MailFactory
 {
-	use Nette\SmartObject;
 
 	/**
 	 * @var string
@@ -25,7 +25,7 @@ class MailFactory
 	private $config;
 
 	/**
-	 * @var Nette\Mail\IMailer
+	 * @var IMailer
 	 */
 	private $mailer;
 
@@ -40,12 +40,12 @@ class MailFactory
 	private $mails;
 
 	/**
-	 * @var Nette\Application\UI\ITemplateFactory
+	 * @var ITemplateFactory
 	 */
 	private $templateFactory;
 
 	/**
-	 * @var Nette\Application\LinkGenerator
+	 * @var LinkGenerator
 	 */
 	private $linkGenerator;
 
@@ -57,29 +57,20 @@ class MailFactory
 	/**
 	 * @var string
 	 */
-	private $mail_images_base_path;
+	private $mailImagesBasePath;
 
 
-	/**
-	 * @param string                                $config
-	 * @param string                                $mail_images_base_path
-	 * @param array                                 $mails
-	 * @param Nette\Mail\IMailer                    $mailer
-	 * @param Nette\Application\LinkGenerator       $linkGenerator
-	 * @param Nette\Application\UI\ITemplateFactory $templateFactory
-	 * @param ILogger                               $logger
-	 */
 	public function __construct(
-		$config,
-		$mail_images_base_path,
-		$mails,
-		Nette\Mail\IMailer $mailer,
-		Nette\Application\LinkGenerator $linkGenerator,
-		Nette\Application\UI\ITemplateFactory $templateFactory,
+		string $config,
+		string $mailImagesBasePath,
+		array $mails,
+		IMailer $mailer,
+		LinkGenerator $linkGenerator,
+		ITemplateFactory $templateFactory,
 		ILogger $logger
 	) {
 		$this->config = $config;
-		$this->mail_images_base_path = $mail_images_base_path;
+		$this->mailImagesBasePath = $mailImagesBasePath;
 		$this->mailer = $mailer;
 		$this->mails = $mails;
 		$this->linkGenerator = $linkGenerator;
@@ -88,14 +79,7 @@ class MailFactory
 	}
 
 
-	/**
-	 * Create email by given type
-	 * @param  string     $type
-	 * @param  mixed|null $args
-	 * @return Ublaboo\Mailing\Mail
-	 * @throws MailingMailCreationException
-	 */
-	public function createByType($type, $args = null)
+	public function createByType(string $type, ?IMailData $mailData): IComposableMail
 	{
 		$this->message = new Message;
 
@@ -108,14 +92,24 @@ class MailFactory
 				$this->linkGenerator,
 				$this->templateFactory,
 				$this->logger,
-				$args
+				$mailData
 			);
 
-			$mail->setBasePath($this->mail_images_base_path);
+			$mail->setBasePath($this->mailImagesBasePath);
+
+			if (!$mail instanceof IComposableMail) {
+				throw new MailingMailCreationException(
+					sprintf(
+						'Email of type %s does not implement %s',
+						$type,
+						IComposableMail::class
+					)
+				);
+			}
 
 			return $mail;
 		}
 
-		throw new MailingMailCreationException("Email [$type] does not exist");
+		throw new MailingMailCreationException(sprintf('Email of type %s does not exist', $type));
 	}
 }

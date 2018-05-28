@@ -10,15 +10,10 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing;
 
-use Nette;
+use Nette\Mail\Message;
 
 interface IComposableMail
 {
 
-	/**
-	 * @param  Nette\Mail\Message $message
-	 * @param  mixed              $params
-	 * @return mixed
-	 */
-	public function compose(Nette\Mail\Message $message, $params = null);
+	public function compose(Message $message, ?IMailData $mailData): void;
 }

@@ -10,46 +10,56 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing\DI;
 
-use Nette;
-use Ublaboo\Mailing\Mail;
+use Nette\DI\CompilerExtension;
+use Nette\DI\Helpers;
+use Ublaboo\Mailing\MailFactory;
+use Ublaboo\Mailing\MailLogger;
 
-class MailingExtension extends Nette\DI\CompilerExtension
+class MailingExtension extends CompilerExtension
 {
+
+	public const CONFIG_LOG  = 'log';
+	public const CONFIG_SEND = 'send';
+	public const CONFIG_BOTH = 'both';
+
+	/**
+	 * @var array
+	 */
 	private $defaults = [
-		'do' => Mail::CONFIG_BOTH,
-		'log_directory' => '%appDir%/../log/mails',
-		'mail_images_base_path' => '%wwwDir%',
+		'do' => self::CONFIG_BOTH,
+		'logDirectory' => '%appDir%/../log/mails',
+		'mailImagesBasePath' => '%wwwDir%',
 		'mails' => [],
 	];
 
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
-		$config = $this->_getConfig();
+		$config = $this->expandConfigParams();
 
 		$builder = $this->getContainerBuilder();
 
 		$builder->addDefinition($this->prefix('mailLogger'))
-			->setClass('Ublaboo\Mailing\MailLogger')
-			->setArguments([$config['log_directory']]);
+			->setClass(MailLogger::class)
+			->setArguments([$config['logDirectory']]);
 
 		$builder->addDefinition($this->prefix('mailFactory'))
-			->setClass('Ublaboo\Mailing\MailFactory')
-			->setArguments([$config['do'], $config['mail_images_base_path'], $config['mails']]);
+			->setClass(MailFactory::class)
+			->setArguments([$config['do'], $config['mailImagesBasePath'], $config['mails']]);
 	}
 
 
-	private function _getConfig()
+	private function expandConfigParams(): array
 	{
 		$config = $this->validateConfig($this->defaults, $this->config);
 
-		$config['log_directory'] = Nette\DI\Helpers::expand(
-			$config['log_directory'],
+		$config['logDirectory'] = Helpers::expand(
+			$config['logDirectory'],
 			$this->getContainerBuilder()->parameters
 		);
 
-		$config['mail_images_base_path'] = Nette\DI\Helpers::expand(
-			$config['mail_images_base_path'],
+		$config['mailImagesBasePath'] = Helpers::expand(
+			$config['mailImagesBasePath'],
 			$this->getContainerBuilder()->parameters
 		);
 

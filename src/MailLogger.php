@@ -10,41 +10,40 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing;
 
-use Nette;
+use Nette\Mail\Message;
 
 class MailLogger implements ILogger
 {
 
-	use Nette\SmartObject;
-
-	public const LOG_EXTENSION = '.eml';
+	private const LOG_EXTENSION = '.eml';
 
 	/**
 	 * @var string
 	 */
-	protected $log_directory;
+	protected $logDirectory;
 
 
-	public function __construct($log_directory)
+	public function __construct($logDirectory)
 	{
-		$this->log_directory = $log_directory;
+		$this->logDirectory = $logDirectory;
 	}
 
 
 	/**
 	 * Log mail messages to eml file
-	 * @param  string             $type
-	 * @param  Nette\Mail\Message $mail
-	 * @return void
 	 */
-	public function log($type, Nette\Mail\Message $mail)
+	public function log($type, Message $mail): void
 	{
 		$timestamp = date('Y-m-d H:i:s');
 		$type .= '.' . time();
 		$file = $this->getLogFile($type, $timestamp);
 
 		if (file_exists($file) && filesize($file)) {
-			$file = str_replace(static::LOG_EXTENSION, '.' . uniqid() . static::LOG_EXTENSION, $file);
+			$file = str_replace(
+				static::LOG_EXTENSION,
+				'.' . uniqid() . static::LOG_EXTENSION,
+				$file
+			);
 		}
 
 		file_put_contents($file, $mail->generateMessage());
@@ -52,22 +51,19 @@ class MailLogger implements ILogger
 
 
 	/**
-	 * If not already created, creat edirectory path that stickes to standard described above
-	 * @param  string $type
-	 * @param  string $timestamp
-	 * @return string
+	 * If not already created, create a directory path that sticks to the standard described above
 	 */
-	public function getLogFile($type, $timestamp)
+	public function getLogFile(string $type, string $timestamp): string
 	{
 		preg_match('/^((([0-9]{4})-[0-9]{2})-[0-9]{2}).*/', $timestamp, $fragments);
 
-		$year_dir = $this->log_directory . '/' . $fragments[3];
-		$month_dir = $year_dir . '/' . $fragments[2];
-		$day_dir = $month_dir . '/' . $fragments[1];
-		$file = $day_dir . '/' . $type . static::LOG_EXTENSION;
+		$yearDir = $this->logDirectory . '/' . $fragments[3];
+		$monthDir = $yearDir . '/' . $fragments[2];
+		$dayDir = $monthDir . '/' . $fragments[1];
+		$file = $dayDir . '/' . $type . static::LOG_EXTENSION;
 
-		if (!file_exists($day_dir)) {
-			mkdir($day_dir, 0777, true);
+		if (!file_exists($dayDir)) {
+			mkdir($dayDir, 0777, true);
 		}
 
 		if (!file_exists($file)) {

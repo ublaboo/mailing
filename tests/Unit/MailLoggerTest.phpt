@@ -1,11 +1,12 @@
 <?php
 
-namespace Ublaboo\Mailing\Tests\Cases;
+declare(strict_types=1);
 
-use Tester\TestCase,
-	Tester\Assert,
-	Mockery,
-	Ublaboo\Mailing\MailLogger;
+namespace Ublaboo\Mailing\Tests\Unit;
+
+use Tester\Assert;
+use Tester\TestCase;
+use Ublaboo\Mailing\MailLogger;
 
 require __DIR__ . '/../bootstrap.php'; 
 
@@ -28,7 +29,6 @@ final class MailLoggerTest extends TestCase
 	}
 
 }
-
 
 $test_case = new MailLoggerTest;
 $test_case->run();

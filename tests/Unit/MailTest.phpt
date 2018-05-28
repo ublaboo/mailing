@@ -1,23 +1,24 @@
 <?php
 
-namespace Ublaboo\Mailing\Tests\Cases;
+declare(strict_types=1);
 
-use Tester\TestCase;
-use Tester\Assert;
+namespace Ublaboo\Mailing\Tests\Unit;
+
 use Mockery;
-use Ublaboo\Mailing\Mail;
-use Ublaboo\Mailing\MailFactory;
+use Tester\Assert;
+use Tester\TestCase;
 use Ublaboo\Mailing\Exception\MailingException;
+use Ublaboo\Mailing\IComposableMail;
+use Ublaboo\Mailing\MailFactory;
 
 require __DIR__ . '/../bootstrap.php';
-require __DIR__ . '/../mails/XTestingMail.php';
 
 final class MailTest extends TestCase
 {
 
-	public function createMail($config)
+	public function createMail(string $config): IComposableMail
 	{
-		$mail_images_base_path = NULL;
+		$mailImagesBasePath = null;
 		$mails = ['recipient' => 'mail@ma.il'];
 
 		$mailer          = Mockery::mock('Nette\Mail\IMailer');
@@ -31,19 +32,19 @@ final class MailTest extends TestCase
 
 		$latte->shouldReceive('addProvider');
 
-		$template->file = FALSE;
-		$template->shouldReceive('setFile')->andSet('file', TRUE);
+		$template->file = false;
+		$template->shouldReceive('setFile')->andSet('file', true);
 		$template->shouldReceive('getLatte')->andReturn($latte);
 
-		$mailer->sent = FALSE;
-		$mailer->shouldReceive('send')->andSet('sent', TRUE);
+		$mailer->sent = false;
+		$mailer->shouldReceive('send')->andSet('sent', true);
 
-		$logger->logged = FALSE;
-		$logger->shouldReceive('log')->andSet('logged', TRUE);
+		$logger->logged = false;
+		$logger->shouldReceive('log')->andSet('logged', true);
 
 		$mailFactory = new MailFactory(
 			$config,
-			$mail_images_base_path,
+			$mailImagesBasePath,
 			$mails,
 			$mailer,
 			$linkGenerator,
@@ -52,7 +53,7 @@ final class MailTest extends TestCase
 		);
 
 		$mail = $mailFactory->createByType(
-			'Ublaboo\Mailing\Tests\Mails\XTestingMail',
+			TestingMail::class,
 			['name' => 'Name', 'from' => 'recipient@recipi.ent']
 		);
 
@@ -62,13 +63,15 @@ final class MailTest extends TestCase
 
 	public function testDoBoth()
 	{
-		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_BOTH);
+		list($mail, $template, $logger, $mailer) = $this->createMail(
+			MailingExtension::CONFIG_BOTH
+		);
 
 		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
-		$mail->setTemplateFile($this->getTmpTemplateFile('XTestingMail'));
+		$mail->setTemplateFile($this->getTmpTemplateFile('TestingMail'));
 		$mail->send();
-		$this->destroyTmpTemplateFile('XTestingMail');
+		$this->destroyTmpTemplateFile('TestingMail');
 
 		Assert::true($template->file, 'Mail template has file set (do = both)');
 		Assert::true($logger->logged, 'Mail logged (do = both)');
@@ -78,13 +81,15 @@ final class MailTest extends TestCase
 
 	public function testDoSend()
 	{
-		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_SEND);
+		list($mail, $template, $logger, $mailer) = $this->createMail(
+			MailingExtension::CONFIG_SEND
+		);
 
 		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
-		$mail->setTemplateFile($this->getTmpTemplateFile('XTestingMail'));
+		$mail->setTemplateFile($this->getTmpTemplateFile('TestingMail'));
 		$mail->send();
-		$this->destroyTmpTemplateFile('XTestingMail');
+		$this->destroyTmpTemplateFile('TestingMail');
 
 		Assert::true($template->file, 'Mail template has file set (do = send)');
 		Assert::false($logger->logged, 'Mail logged (do = send)');
@@ -94,13 +99,15 @@ final class MailTest extends TestCase
 
 	public function testDoLog()
 	{
-		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_LOG);
+		list($mail, $template, $logger, $mailer) = $this->createMail(
+			MailingExtension::CONFIG_LOG
+		);
 
 		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
-		$mail->setTemplateFile($this->getTmpTemplateFile('XTestingMail'));
+		$mail->setTemplateFile($this->getTmpTemplateFile('TestingMail'));
 		$mail->send();
-		$this->destroyTmpTemplateFile('XTestingMail');
+		$this->destroyTmpTemplateFile('TestingMail');
 
 		Assert::true($template->file, 'Mail template has file set (do = log)');
 		Assert::true($logger->logged, 'Mail logged (do = log)');
@@ -110,7 +117,9 @@ final class MailTest extends TestCase
 
 	public function testSetBody()
 	{
-		list($mail, $template, $logger, $mailer) = $this->createMail(Mail::CONFIG_BOTH);
+		list($mail, $template, $logger, $mailer) = $this->createMail(
+			MailingExtension::CONFIG_BOTH
+		);
 
 		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
 
@@ -150,7 +159,6 @@ final class MailTest extends TestCase
 	}
 
 }
-
 
 $test_case = new MailTest;
 $test_case->run();
