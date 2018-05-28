@@ -7,6 +7,7 @@ namespace Ublaboo\Mailing\Tests\Unit;
 use Nette\Mail\Message;
 use Ublaboo\Mailing\AbstractMail;
 use Ublaboo\Mailing\IComposableMail;
+use Ublaboo\Mailing\IMailData;
 
 final class TestingMail extends AbstractMail implements IComposableMail
 {
@@ -14,13 +15,13 @@ final class TestingMail extends AbstractMail implements IComposableMail
 	/**
 	 * @throws \InvalidArgumentException
 	 */
-	public function compose(Message $message, ?IMailData $mailData)
+	public function compose(Message $message, ?IMailData $mailData): void
 	{
 		if (!$mailData instanceof TestingMailData) {
 			throw new \InvalidArgumentException;
 		}
 
-		$message->setFrom("{$params['name']} <{$params['from']}>");
-		$message->addTo($this->mails['recipient']);
+		$message->setFrom(sprintf("%s <%s>", $mailData->getName(), $mailData->getFrom()));
+		$message->addTo($this->mailAddresses['recipient']);
 	}
 }

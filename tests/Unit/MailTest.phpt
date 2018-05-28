@@ -7,18 +7,19 @@ namespace Ublaboo\Mailing\Tests\Unit;
 use Mockery;
 use Tester\Assert;
 use Tester\TestCase;
+use Ublaboo\Mailing\DI\MailingExtension;
 use Ublaboo\Mailing\Exception\MailingException;
-use Ublaboo\Mailing\IComposableMail;
 use Ublaboo\Mailing\MailFactory;
+use Ublaboo\Mailing\Tests\Unit\TestingMailData;
 
 require __DIR__ . '/../bootstrap.php';
 
 final class MailTest extends TestCase
 {
 
-	public function createMail(string $config): IComposableMail
+	public function createMail(string $config): array
 	{
-		$mailImagesBasePath = null;
+		$mailImagesBasePath = 'www';
 		$mails = ['recipient' => 'mail@ma.il'];
 
 		$mailer          = Mockery::mock('Nette\Mail\IMailer');
@@ -54,7 +55,7 @@ final class MailTest extends TestCase
 
 		$mail = $mailFactory->createByType(
 			TestingMail::class,
-			['name' => 'Name', 'from' => 'recipient@recipi.ent']
+			new TestingMailData('Name', 'from@fro.m')
 		);
 
 		return [$mail, $template, $logger, $mailer];
@@ -67,9 +68,6 @@ final class MailTest extends TestCase
 			MailingExtension::CONFIG_BOTH
 		);
 
-		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
-
-		$mail->setTemplateFile($this->getTmpTemplateFile('TestingMail'));
 		$mail->send();
 		$this->destroyTmpTemplateFile('TestingMail');
 
@@ -85,9 +83,6 @@ final class MailTest extends TestCase
 			MailingExtension::CONFIG_SEND
 		);
 
-		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
-
-		$mail->setTemplateFile($this->getTmpTemplateFile('TestingMail'));
 		$mail->send();
 		$this->destroyTmpTemplateFile('TestingMail');
 
@@ -103,9 +98,6 @@ final class MailTest extends TestCase
 			MailingExtension::CONFIG_LOG
 		);
 
-		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
-
-		$mail->setTemplateFile($this->getTmpTemplateFile('TestingMail'));
 		$mail->send();
 		$this->destroyTmpTemplateFile('TestingMail');
 
@@ -121,11 +113,8 @@ final class MailTest extends TestCase
 			MailingExtension::CONFIG_BOTH
 		);
 
-		Assert::exception([$mail, 'getTemplateFile'], MailingException::class);
-
 		$mail->send();
 
-		Assert::false($template->file, 'Mail template has file set');
 		Assert::true($logger->logged, 'Mail logged');
 		Assert::true($mailer->sent, 'Mail sent');
 	}
@@ -150,12 +139,13 @@ final class MailTest extends TestCase
 
 	private function destroyTmpTemplateFile($name)
 	{
-		$name = lcfirst(preg_replace_callback('/(?<=.)([A-Z])/', function ($m) {
-			return '_' . strtolower($m[1]);
-		}, $name));
+		if (file_exists(__DIR__ . "/../templates/$name.latte")) {
+			unlink(__DIR__ . "/../templates/$name.latte");
+		}
 
-		unlink(__DIR__ . "/../templates/$name.latte");
-		rmdir(__DIR__ . '/../templates');
+		if (file_exists(__DIR__ . '/../templates') && is_dir(__DIR__ . '/../templates')) {
+			rmdir(__DIR__ . '/../templates');
+		}
 	}
 
 }

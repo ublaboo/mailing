@@ -105,8 +105,6 @@ abstract class AbstractMail
 	
 	/**
 	 * Render latte template to string and send (and/or log) mail
-	 *
-	 * @throws \UnexpectedValueException
 	 */
 	public function send(): void
 	{
@@ -132,10 +130,6 @@ abstract class AbstractMail
 		 * Set body/html body
 		 */
 		if (version_compare(Engine::VERSION, '2.4.0', '>=')) {
-			if (!$this->template instanceof Template) {
-				throw new \UnexpectedValueException;
-			}
-
 			$this->template->getLatte()->addProvider('uiControl', $this->linkGenerator);
 		} else {
 			$this->template->_control = $this->linkGenerator;

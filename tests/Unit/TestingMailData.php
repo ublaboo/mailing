@@ -12,17 +12,29 @@ final class TestingMailData implements IMailData
 	/**
 	 * @var string
 	 */
-	private $foo;
+	private $name;
+
+	/**
+	 * @var string
+	 */
+	private $from;
 
 
-	public function __construct(string $foo)
+	public function __construct(string $name, string $from)
 	{
-		$this->foo = $foo;
+		$this->name = $name;
+		$this->from = $from;
 	}
 
 
-	public function getFoo(): string
+	public function getName(): string
 	{
-		return $this->foo;
+		return $this->name;
+	}
+
+
+	public function getFrom(): string
+	{
+		return $this->from;
 	}
 }
