@@ -16,4 +16,6 @@ interface IComposableMail
 {
 
 	public function compose(Message $message, ?IMailData $mailData): void;
+
+	public function send(): void;
 }
