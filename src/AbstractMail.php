@@ -119,12 +119,15 @@ abstract class AbstractMail
 		 * 
 		 * will have template with path of:
 		 * 		/templates/FooMail.latte
-		 * 
-		 * @return string
 		 */
-		$templateName = (new \ReflectionClass($this))->getShortName();
+		$mailClassReflection = new \ReflectionClass($this);
+		$templateName = $mailClassReflection->getShortName();
 
-		$this->template->setFile(sprintf('%s/templates/%s', __DIR__, $templateName));
+		$this->template->setFile(sprintf(
+			'%s/templates/%s.latte',
+			dirname($mailClassReflection->getFilename()),
+			$templateName
+		));
 
 		/**
 		 * Set body/html body
