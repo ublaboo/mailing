@@ -63,7 +63,7 @@ abstract class AbstractMail
 	private $config;
 
 	/**
-	 * @var IMailData|null
+	 * @var IMessageData|null
 	 */
 	private $mailData;
 
@@ -76,7 +76,7 @@ abstract class AbstractMail
 		LinkGenerator $linkGenerator,
 		ITemplateFactory $templateFactory,
 		ILogger $logger,
-		?IMailData $mailData
+		?IMessageData $mailData
 	) {
 		$this->config = $config;
 		$this->mailAddresses = $mailAddresses;

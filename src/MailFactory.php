@@ -79,7 +79,7 @@ class MailFactory
 	}
 
 
-	public function createByType(string $type, ?IMailData $mailData): IComposableMail
+	public function createByType(string $type, ?IMessageData $mailData): IComposableMail
 	{
 		$this->message = new Message;
 

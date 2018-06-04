@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing\Tests\Unit;
 
-use Ublaboo\Mailing\IMailData;
+use Ublaboo\Mailing\IMessageData;
 
-final class TestingMailData implements IMailData
+final class TestingMailData implements IMessageData
 {
 
 	/**

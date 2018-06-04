@@ -10,6 +10,6 @@ declare(strict_types=1);
 
 namespace Ublaboo\Mailing;
 
-interface IMailData
+interface IMessageData
 {
 }

@@ -15,7 +15,7 @@ use Nette\Mail\Message;
 interface IComposableMail
 {
 
-	public function compose(Message $message, ?IMailData $mailData): void;
+	public function compose(Message $message, ?IMessageData $mailData): void;
 
 	public function send(): void;
 }

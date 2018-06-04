@@ -7,7 +7,7 @@ namespace Ublaboo\Mailing\Tests\Unit;
 use Nette\Mail\Message;
 use Ublaboo\Mailing\AbstractMail;
 use Ublaboo\Mailing\IComposableMail;
-use Ublaboo\Mailing\IMailData;
+use Ublaboo\Mailing\IMessageData;
 
 final class TestingMail extends AbstractMail implements IComposableMail
 {
@@ -15,7 +15,7 @@ final class TestingMail extends AbstractMail implements IComposableMail
 	/**
 	 * @throws \InvalidArgumentException
 	 */
-	public function compose(Message $message, ?IMailData $mailData): void
+	public function compose(Message $message, ?IMessageData $mailData): void
 	{
 		if (!$mailData instanceof TestingMailData) {
 			throw new \InvalidArgumentException;
