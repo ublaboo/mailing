@@ -26,11 +26,11 @@
 	},
 	"require": {
 		"php": ">= 7.1",
-		"nette/utils": "~2.4",
-		"nette/di": "~2.4",
-		"nette/application": "~2.4",
-		"nette/mail": "~2.4",
-		"latte/latte": "~2.4"
+		"nette/utils": "~2.4 || ~3.0@rc",
+		"nette/di": "~2.4 || ~3.0@rc",
+		"nette/application": "~2.4 || ~3.0@rc",
+		"nette/mail": "~2.4 || ~3.0@rc",
+		"latte/latte": "~2.4 || ~3.0@rc"
 	},
 	"require-dev": {
 		"nette/tester": "~1.6.1",
