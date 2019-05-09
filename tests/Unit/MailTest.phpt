@@ -6,6 +6,7 @@ namespace Ublaboo\Mailing\Tests\Unit;
 
 use Mockery;
 use Tester\Assert;
+use Tester\Environment;
 use Tester\TestCase;
 use Ublaboo\Mailing\DI\MailingExtension;
 use Ublaboo\Mailing\Exception\MailingException;
@@ -13,6 +14,7 @@ use Ublaboo\Mailing\MailFactory;
 use Ublaboo\Mailing\Tests\Unit\TestingMailData;
 
 require __DIR__ . '/../bootstrap.php';
+Environment::bypassFinals();
 
 final class MailTest extends TestCase
 {
