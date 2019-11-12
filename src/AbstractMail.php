@@ -108,35 +108,7 @@ abstract class AbstractMail
 	 */
 	public function send(): void
 	{
-		/**
-		 * Template variables..
-		 */
-		$this->template->mailData = $this->mailData;
-
-		/**
-		 * Stick to convention that Email:
-		 * 		/FooMail.php	
-		 * 
-		 * will have template with path of:
-		 * 		/templates/FooMail.latte
-		 */
-		$mailClassReflection = new \ReflectionClass($this);
-		$templateName = $mailClassReflection->getShortName();
-
-		$this->template->setFile(sprintf(
-			'%s/templates/%s.latte',
-			dirname($mailClassReflection->getFilename()),
-			$templateName
-		));
-
-		/**
-		 * Set body/html body
-		 */
-		if (version_compare(Engine::VERSION, '2.4.0', '>=')) {
-			$this->template->getLatte()->addProvider('uiControl', $this->linkGenerator);
-		} else {
-			$this->template->_control = $this->linkGenerator;
-		}
+		$templateName = $this->prepareTemplate();
 
 		$this->message->setHtmlBody((string) $this->template, $this->mailImagesBasePath);
 
@@ -153,5 +125,45 @@ abstract class AbstractMail
 		if ($this->config === MailingExtension::CONFIG_LOG || $this->config === MailingExtension::CONFIG_BOTH) {
 			$this->logger->log($templateName, $this->message);
 		}
+	}
+	
+	
+	/**
+	 * @return string
+	 * @throws \ReflectionException
+	 */
+	protected function prepareTemplate(): string
+	{
+		/**
+		 * Template variables..
+		 */
+		$this->template->mailData = $this->mailData;
+		
+		/**
+		 * Stick to convention that Email:
+		 * 		/FooMail.php
+		 *
+		 * will have template with path of:
+		 * 		/templates/FooMail.latte
+		 */
+		$mailClassReflection = new \ReflectionClass($this);
+		$templateName = $mailClassReflection->getShortName();
+		
+		$this->template->setFile(sprintf(
+			'%s/templates/%s.latte',
+			dirname($mailClassReflection->getFilename()),
+			$templateName
+		));
+		
+		/**
+		 * Set body/html body
+		 */
+		if (version_compare(Engine::VERSION, '2.4.0', '>=')) {
+			$this->template->getLatte()->addProvider('uiControl', $this->linkGenerator);
+		} else {
+			$this->template->_control = $this->linkGenerator;
+		}
+		
+		return $templateName;
 	}
 }
