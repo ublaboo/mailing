@@ -41,7 +41,7 @@ class MailLogger implements ILogger
 		if (file_exists($file) && filesize($file)) {
 			$file = str_replace(
 				static::LOG_EXTENSION,
-				'.' . uniqid() . static::LOG_EXTENSION,
+				'.' . uniqid('', true) . static::LOG_EXTENSION,
 				$file
 			);
 		}
