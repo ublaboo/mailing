@@ -36,71 +36,75 @@ You will send it via Mail::send() method.
 Once you have registered mailing extension, you can create new mail class and then get MailFactory from DIC to send it:
 
 ```php
-namespace App;
+namespace App\Mailing;
 
-use Nette;
+use Ublaboo\Mailing\IMessageData;
+
+class ContactMailData implements IMessageData
+{
+
+	public function __construct(
+		public readonly string $recipient,
+	) 
+	{
+	}
+
+}
+```
+
+```php
+namespace App\Mailing;
+
+use InvalidArgumentException;
+use Nette\Mail\Message;
 use Ublaboo\Mailing\Mail;
 use Ublaboo\Mailing\IComposableMail;
+use Ublaboo\Mailing\IMessageData;
 
 class ContactMail extends Mail implements IComposableMail
 {
 
-	/**
-	 * There you will always have your mail addresses from configuration file
-	 * @var array
-	 */
-	protected $mails;
-
-
-	public function compose(Nette\Mail\Message $message, $params = null)
+	public function compose(Message $message, ?IMessageData $mailData): void
 	{
-		$message->setFrom($this->mails['default_sender']);
-		$message->addTo($params['recipient']);
+		if (!$mailData instanceof ContactMailData) {
+			throw new InvalidArgumentException();
+		}
+	
+		$message->setFrom($this->mailAddresses['defaultSender']);
+		$message->addTo($mailData->recipient);
 	}
+
 }
 ```
 
 ```php
-use Nette;
-use Ublaboo;
+namespace App\Presenters;
 
-class HomepagePresenter extends Nette\Application\UI\Presenter
+use App\Mailing\ContactMail;
+use App\Mailing\ContactMailData;
+use Nette\Application\UI\Presenter;
+use Nette\DI\Attributes\Inject;
+use Ublaboo\Mailing\MailFactory;
+
+class HomepagePresenter extends Presenter
 {
 
-    /**
-     * @var Ublaboo\Mailing\MailFactory
-     * @inject
-     */
-    public $mailFactory;
+	#[Inject]
+	public MailFactory $mailFactory;
 
+	public function actionDefault(): void
+	{
+		$mail = $this->mailFactory->createByType(
+			ContactMail::class, 
+			new ContactMailData(
+				recipient: 'hello@hello.hello'
+			),
+		);
+		
+		$mail->send();
+	}
 
-    public function actionDefault()
-    {
-        $params = ['recipient' => 'hello@hello.hello'];
-        $mail = $this->mailFactory->createByType('App\Mailing\ContactMail', $params);
-    }
 }
-
-```
-
-#### Send it!
-
-```php
-# ...
-
-$mail = $this->mailFactory->createByType('App\Mailing\ContactMail', $params);
-$mail->send();
-```
-
-#### Pass parameters to the mail
-
-You see the `$params` variable? That variable is passed to the `::compose()` method of you mail class. And also it is passed into mail template, exapanded of course. So, say you pass parameters (below) to `$mailFactory`, you will be able to use `$recipient` and `$name` in your mail template.
-
-```php
-$params = [
-    'recipient' => 'john@doe.example',
-    'name' => 'John Doe'
-];
 ```
 
 Example mail template:
@@ -112,9 +116,9 @@ Example mail template:
 		<title>Contact mail</title>
 	</head>
 	<body>
-	    Helo, {$name}
-	    <br>
-	    Your email is: {$recipient}
+		Helo, {$mailData->name}
+		<br>
+		Your email is: {$mailData->recipient}
 	</body>
 </html>
 ```
@@ -128,7 +132,7 @@ app/
 	Mailing/
 		ContactMail.php
 		templates/
-			contact_mail.latte
+			ContactMail.latte
 ```
 
 But that is only a recommendation. You can always change your template file path by `Mail::setTemplateFile()`. Eg:
@@ -136,11 +140,11 @@ But that is only a recommendation. You can always change your template file path
 ```php
 # ...
 
-public function compose(Nette\Mail\Message $message, $params = NULL)
+public function compose(Message $message, ?IMessageData $mailData): void
 {
 	# ...
 	
-	$this->setTemplateFile(__DIR__ . '/templates/contact_mail.latte');
+	$this->setTemplateFile(__DIR__ . '/templates/ContactMail.latte');
 }
 ```
 
@@ -149,7 +153,7 @@ Or from the outside:
 ```php
 # ...
 
-$mail = $mailFactory->createByType('App\Mailing\ContactMail', ['recipient' => 'hello@hello.hello']);
+$mail = $mailFactory->createByType(ContactMail::class, new ContactMailData(recipient: 'hello@hello.hello']));
 $mail->setTemplateFile('super_awesome_template.latte');
 ```
 
@@ -160,7 +164,7 @@ Of course you don't have to send mails with templates, you can just use plaintex
 ```php
 # ...
 
-public function compose(Nette\Mail\Message $message, $params = NULL)
+public function compose(Message $message, ?IMessageData $mailData): void
 {
 	# ...
 	
@@ -184,8 +188,8 @@ There are several config options:
 ```
 mailing:
 	do: both # log|send|both
-	log_directory: '%appDir%/../log/mails' # this is default option
-	mail_images_base_path: %wwwDir% # this is default option
+	logDirectory: '%appDir%/../log/mails' # this is default option
+	mailImagesBasePath: %wwwDir% # this is default option
 	mails: []
 ```
 
@@ -199,11 +203,11 @@ In this option you may choose between these three directives:
 - **send** will only send all mails, but not log
 - **both** will do both
 
-**log_directory**
+**logDirectory**
 
 That one is pretty obvious. Directory, where mail files (`.eml`) will be stored.
 
-**mail_images_base_path**
+**mailImagesBasePath**
 
 This is the path, where `Nette\Mail\Message` will look for all images that can be inline embedded in mail.
 
@@ -216,7 +220,7 @@ E.g.:
 ```
 mailing:
 	mails: [
-		default_sender: foo@bar.baz
+		defaultSender: foo@bar.baz
 	]
 ```
 
