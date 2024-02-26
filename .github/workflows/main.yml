@@ -1,0 +1,35 @@
+name: 'QA'
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '0 8 * * 1' # At 08:00 on Monday
+
+env:
+  php-tools: 'composer:v2'
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: make phpstan
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: tokenizer
+      - run: composer install --no-interaction --no-progress --prefer-dist
+      - run: make tests

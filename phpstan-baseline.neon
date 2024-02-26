@@ -1,0 +1,86 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Nette\\\\Application\\\\UI\\\\ITemplate\\:\\:getLatte\\(\\)\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^Cannot cast Nette\\\\Application\\\\UI\\\\ITemplate to string\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^Method Ublaboo\\\\Mailing\\\\AbstractMail\\:\\:__construct\\(\\) has parameter \\$mailAddresses with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^Parameter \\#1 \\$path of function dirname expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^Property Ublaboo\\\\Mailing\\\\AbstractMail\\:\\:\\$mailAddresses type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^Property Ublaboo\\\\Mailing\\\\AbstractMail\\:\\:\\$template \\(Nette\\\\Application\\\\UI\\\\ITemplate\\) does not accept Nette\\\\Application\\\\UI\\\\Template\\.$#"
+			count: 1
+			path: src/AbstractMail.php
+
+		-
+			message: "#^Method Ublaboo\\\\Mailing\\\\DI\\\\MailingExtension\\:\\:expandConfigParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DI/MailingExtension.php
+
+		-
+			message: "#^Parameter \\#2 \\$config of method Nette\\\\DI\\\\CompilerExtension\\:\\:validateConfig\\(\\) expects array\\|null, array\\|object given\\.$#"
+			count: 1
+			path: src/DI/MailingExtension.php
+
+		-
+			message: "#^Property Ublaboo\\\\Mailing\\\\DI\\\\MailingExtension\\:\\:\\$defaults type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/DI/MailingExtension.php
+
+		-
+			message: "#^Method Ublaboo\\\\Mailing\\\\ILogger\\:\\:log\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: src/ILogger.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:setBasePath\\(\\)\\.$#"
+			count: 1
+			path: src/MailFactory.php
+
+		-
+			message: "#^Method Ublaboo\\\\Mailing\\\\MailFactory\\:\\:__construct\\(\\) has parameter \\$mails with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailFactory.php
+
+		-
+			message: "#^Property Ublaboo\\\\Mailing\\\\MailFactory\\:\\:\\$mails type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/MailFactory.php
+
+		-
+			message: "#^Method Ublaboo\\\\Mailing\\\\MailLogger\\:\\:__construct\\(\\) has parameter \\$logDirectory with no type specified\\.$#"
+			count: 1
+			path: src/MailLogger.php
+
+		-
+			message: "#^Method Ublaboo\\\\Mailing\\\\MailLogger\\:\\:log\\(\\) has parameter \\$type with no type specified\\.$#"
+			count: 1
+			path: src/MailLogger.php
+
+		-
+			message: "#^Unsafe access to private constant Ublaboo\\\\Mailing\\\\MailLogger\\:\\:LOG_EXTENSION through static\\:\\:\\.$#"
+			count: 3
+			path: src/MailLogger.php
